@@ -146,30 +146,14 @@ function Game(boardElm, boardBackgroundElm){
     };
 
     this.undo = function(){
-        if(!playing){
-            if(!history.length)return;
-            var last = history.pop();
-            board.unsetGo(last.r,last.c);
-            white.watch(last.r,last.c,'remove');
-            black.watch(last.r,last.c,'remove');
-            return;
-        }
-        do{
-            if(!history.length)return;
-            var last = history.pop();
-            board.unsetGo(last.r,last.c);
-            white.watch(last.r,last.c,'remove');
-            black.watch(last.r,last.c,'remove');
-        }while(players[last.color] instanceof AIPlayer);
+        if(!history.length)return;
+        var last = history.pop();
+        board.unsetGo(last.r,last.c);
+        
         var last = history[history.length - 1];
         if(history.length > 0) board.highlight(last.r, last.c);
         else board.unHighlight();
         players[last.color].other.myTurn();
-        for(var col in {'black':'','white':''}){
-            if(players[col] instanceof AIPlayer && players[col].computing){
-                players[col].cancel++;
-            }
-        }
     };
 
     this.draw = function(){
@@ -180,7 +164,7 @@ function Game(boardElm, boardBackgroundElm){
     this.win = function(){
         playing = false;
         board.setClickable(false);
-        showWinDialog(this);
+        // showWinDialog(this);
     };
 
     this.init = function(player1, player2){

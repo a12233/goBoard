@@ -5,11 +5,11 @@ function Player(color){
 
 Player.prototype.myTurn = function(){
     this.game.setCurrentColor(this.color);
-    gameInfo.setText((function(string){
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    })(this.color)+"'s turn.");
-    gameInfo.setColor(this.color);
-    gameInfo.setBlinking(false);
+    // gameInfo.setText((function(string){
+    //     return string.charAt(0).toUpperCase() + string.slice(1);
+    // })(this.color)+"'s turn.");
+    // gameInfo.setColor(this.color);
+    // gameInfo.setBlinking(false);
 };
 
 Player.prototype.watch = function(){};
@@ -27,7 +27,4 @@ HumanPlayer.prototype = new Player();
 HumanPlayer.prototype.myTurn = function(){
     Player.prototype.myTurn.call(this);
     this.game.toHuman(this.color);
-    if(this.other instanceof AIPlayer){
-        gameInfo.setText('Your turn');
-    }
 };
