@@ -7,10 +7,6 @@ $(document).ready(function(){
     game.init(new Player("black"), new Player("white"));
     game.start();
     $("#new-game").on('click', function(){
-        try{
-            game.white.worker.terminate();
-            game.black.worker.terminate();
-        }catch(e){}
         game.mode='hvh';
         game.init(new Player("black"), new Player("white"));
         game.start();
@@ -68,7 +64,7 @@ function Game(boardplace, boardBackgroundplace){
 
     this.setGo = function(r, c, color){
         if(!playing || board.isSet(r, c))return false;
-        history.push({
+        history.push({ //Game history 
             r: r,
             c: c,
             color:color
@@ -267,7 +263,7 @@ function Place(r, c, board, boardSize){
 
 Place.prototype.set = function(color){
     this.place.addClass("set").addClass(color).removeClass("warning");
-    this.isSet = true;
+    this.isSet = true;``
 };
 
 Place.prototype.unset = function(){
