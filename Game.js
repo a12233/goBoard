@@ -4,7 +4,7 @@ $(document).ready(function(){
     $(window).resize(adjustSize);
     adjustSize();
     game.mode='hvh';
-    game.init(new HumanPlayer("black"), new HumanPlayer("white"));
+    game.init(new Player("black"), new Player("white"));
     game.start();
     $("#new-game").on('click', function(){
         try{
@@ -12,7 +12,7 @@ $(document).ready(function(){
             game.black.worker.terminate();
         }catch(e){}
         game.mode='hvh';
-        game.init(new HumanPlayer("black"), new HumanPlayer("white"));
+        game.init(new Player("black"), new Player("white"));
         game.start();
     });
     $("#undo-button").on('click', function(){
@@ -54,8 +54,6 @@ function Game(boardplace, boardBackgroundplace){
         if(playing){
             this.rounds++;
             board.updateMap(r, c, color);
-            black.watch(r, c, color);
-            white.watch(r, c, color);
             setTimeout(progress, 0);
         }
     };
@@ -127,11 +125,11 @@ function Game(boardplace, boardBackgroundplace){
         black.game = this;
         white.other = black;
         black.other = white;
-        if(!(black instanceof HumanPlayer)){
+        if(!(black instanceof Player)){
             board.setWarning(0, true);
         }
 
-        if(!(white instanceof HumanPlayer)){
+        if(!(white instanceof Player)){
             board.setWarning(1, true);
         }
     };
@@ -392,6 +390,7 @@ var Board = function(boardplace, backgroundplace){
         $(".last-move").removeClass("last-move");
     };
 
+    //check win condition 
     this.winChange = function(r, c, color){
         boardplace.find(".warning").removeClass("warning");
         var num = colorToNum[color],
@@ -544,33 +543,13 @@ var Board = function(boardplace, backgroundplace){
     }
 };
 /* ************************************************************************/
-// Agents that represent either a player or an AI
 function Player(color){
     this.color = color;
 }
-
 Player.prototype.myTurn = function(){
     this.game.setCurrentColor(this.color);
-    // gameInfo.setText((function(string){
-    //     return string.charAt(0).toUpperCase() + string.slice(1);
-    // })(this.color)+"'s turn.");
-    // gameInfo.setColor(this.color);
-    // gameInfo.setBlinking(false);
+    this.game.toHuman(this.color);
 };
-
-Player.prototype.watch = function(){};
-
 Player.prototype.setGo = function(r,c){
     return this.game.setGo(r, c, this.color);
-};
-
-function HumanPlayer(color, game){
-    Player.call(this, color, game);
-}
-
-HumanPlayer.prototype = new Player();
-
-HumanPlayer.prototype.myTurn = function(){
-    Player.prototype.myTurn.call(this);
-    this.game.toHuman(this.color);
 };
