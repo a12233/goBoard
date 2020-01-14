@@ -1,4 +1,11 @@
 $(document).ready(function(){
+    var gameRegion = "<div id='game-region'></div>"
+    $("#myGame").append("<div data-role='page' data-theme='w' id='game-page' class='no-background'></div").append("<div data-role='content' class='center no-padding'></div>").append(gameRegion)
+    $("#game-region").append("<header class='game-ult'>Gomoku</header>", "<div id='main-but-group' class='game-ult'></div>","<div id='myBoard'></div>")
+    $("#main-but-group").append("<button id='new-game'>New Game</button>","<button id='undo-button'>Undo</button>")
+    var goBoard = "<div class='go-board' data-enhance=false></div>"
+    var boardBody = "<table class='board' data-enhance=false><tbody></tbody></table>"
+    $("#myBoard").append(goBoard,boardBody)
     var game = new Game($(".go-board"), $(".board tbody"));
     var adjustSize = adjustSizeGen();
     $(window).resize(adjustSize);
@@ -138,8 +145,6 @@ function Game(boardplace, boardBackgroundplace){
 
 //formatting 
 function adjustSizeGen(){
-    // var smallScreen = navigator.userAgent.toLowerCase().match(/(iphone|ipod)/);
-
     var gameRegion = $("#game-region"),
         tds = $('.board td'),
         board = $('.go-board'),
@@ -284,7 +289,6 @@ Place.prototype.unwarns = function(){
 };
 /***************************************************************************** */
 var Board = function(boardplace, backgroundplace){
-    //$(".go-board"), $(".board tbody")
     var squares = document.createDocumentFragment();
     var boardSize = 15; 
 
